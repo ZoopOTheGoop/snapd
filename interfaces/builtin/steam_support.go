@@ -202,6 +202,12 @@ deny /usr/bin/{chfn,chsh,gpasswd,mount,newgrp,passwd,su,sudo,umount} x,
 capability sys_admin,
 capability sys_ptrace,
 capability setpcap,
+
+# Needed for Steam VR, it requires sys_nice to manage subprocesses,
+# and creates virtual sockets for communicate between containerized 
+# parts of the VR runtime
+capability sys_nice,
+unix addr="@steam*",
 `
 
 const steamSupportConnectedPlugSecComp = `
