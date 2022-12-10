@@ -100,7 +100,7 @@ ptrace (read),
 @{PROC}/*/{,task/*/}statm r,
 @{PROC}/*/{,task/*/}status r,
 @{PROC}/*/{,task/*/}wchan r,
-@{PROC}/*/{,task/*}children r,
+@{PROC}/*/{,task/*/}children r,
 
 # Allow reading processes security label
 @{PROC}/*/{,task/*/}attr/{,apparmor/}current r,
