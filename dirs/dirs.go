@@ -129,9 +129,10 @@ var (
 	LegacyCompletersDir    string
 	CompletersDir          string
 
-	SystemFontsDir            string
-	SystemLocalFontsDir       string
-	SystemFontconfigCacheDirs []string
+	SystemFontsDir             string
+	SystemLocalFontsDir        string
+	SystemFontconfigCacheDirs  []string
+	SystemFontconfigConfigDirs []string
 
 	SnapshotsDir string
 
@@ -505,6 +506,8 @@ func SetRootDir(rootdir string) {
 		// locations available
 		SystemFontconfigCacheDirs = append(SystemFontconfigCacheDirs, filepath.Join(rootdir, "/usr/lib/fontconfig/cache"))
 	}
+
+	SystemFontconfigConfigDirs = []string{filepath.Join(rootdir, "/usr/share/fontconfig/conf.avail")}
 
 	SnapshotsDir = filepath.Join(rootdir, snappyDir, "snapshots")
 

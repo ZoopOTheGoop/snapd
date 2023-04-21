@@ -333,6 +333,8 @@ func (iface *desktopInterface) fontconfigDirs(plug *interfaces.ConnectedPlug) ([
 		dirs.SystemLocalFontsDir,
 	}
 
+	fontDirs = append(fontDirs, dirs.SystemFontconfigConfigDirs...)
+
 	shouldMountHostFontCache, err := iface.shouldMountHostFontCache(plug)
 	if err != nil {
 		return nil, err

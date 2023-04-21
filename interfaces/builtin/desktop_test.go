@@ -90,6 +90,7 @@ func (s *DesktopInterfaceSuite) TestAppArmorSpec(c *C) {
 	c.Assert(os.MkdirAll(filepath.Join(tmpdir, "/usr/share/fonts"), 0777), IsNil)
 	c.Assert(os.MkdirAll(filepath.Join(tmpdir, "/usr/local/share/fonts"), 0777), IsNil)
 	c.Assert(os.MkdirAll(filepath.Join(tmpdir, "/var/cache/fontconfig"), 0777), IsNil)
+	c.Assert(os.MkdirAll(filepath.Join(tmpdir, "/usr/share/fontconfig/conf.avail"), 0777), IsNil)
 	restore := release.MockOnClassic(false)
 	defer restore()
 
@@ -136,6 +137,7 @@ func (s *DesktopInterfaceSuite) TestMountSpec(c *C) {
 	c.Assert(os.MkdirAll(filepath.Join(tmpdir, "/usr/share/fonts"), 0777), IsNil)
 	c.Assert(os.MkdirAll(filepath.Join(tmpdir, "/usr/local/share/fonts"), 0777), IsNil)
 	c.Assert(os.MkdirAll(filepath.Join(tmpdir, "/var/cache/fontconfig"), 0777), IsNil)
+	c.Assert(os.MkdirAll(filepath.Join(tmpdir, "/usr/share/fontconfig/conf.avail"), 0777), IsNil)
 
 	restore := release.MockOnClassic(false)
 	defer restore()
@@ -161,7 +163,7 @@ func (s *DesktopInterfaceSuite) TestMountSpec(c *C) {
 	c.Assert(spec.AddConnectedPlug(s.iface, s.plug, s.coreSlot), IsNil)
 
 	entries = spec.MountEntries()
-	c.Assert(entries, HasLen, 3)
+	c.Assert(entries, HasLen, 4)
 
 	const hostfs = "/var/lib/snapd/hostfs"
 	c.Check(entries[0].Name, Equals, hostfs+dirs.SystemFontsDir)
@@ -172,9 +174,13 @@ func (s *DesktopInterfaceSuite) TestMountSpec(c *C) {
 	c.Check(entries[1].Dir, Equals, "/usr/local/share/fonts")
 	c.Check(entries[1].Options, DeepEquals, []string{"bind", "ro"})
 
-	c.Check(entries[2].Name, Equals, hostfs+dirs.SystemFontconfigCacheDirs[0])
-	c.Check(entries[2].Dir, Equals, "/var/cache/fontconfig")
+	c.Check(entries[2].Name, Equals, hostfs+dirs.SystemFontconfigConfigDirs[0])
+	c.Check(entries[2].Dir, Equals, "/usr/share/fontconfig/conf.avail")
 	c.Check(entries[2].Options, DeepEquals, []string{"bind", "ro"})
+
+	c.Check(entries[3].Name, Equals, hostfs+dirs.SystemFontconfigCacheDirs[0])
+	c.Check(entries[3].Dir, Equals, "/var/cache/fontconfig")
+	c.Check(entries[3].Options, DeepEquals, []string{"bind", "ro"})
 
 	entries = spec.UserMountEntries()
 	c.Assert(entries, HasLen, 1)
